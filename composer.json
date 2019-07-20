@@ -7,7 +7,7 @@
 		}
 	],
 	"license": "MIT",
-	"description": "A pretty print and easy to locate debug function",
+	"description": "Debug2 is a function developed to debug PHP code of form easy, simple, pretty print, fast and safe.",
 	"keywords": [
 		"debug",
 		"pretty print",
