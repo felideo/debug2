@@ -1,0 +1,25 @@
+{
+	"name": "felideo/debug2",
+	"authors": [
+		{
+			"name": "Felideo Desittale Paravimnce",
+			"email": "felideo@gmail.com"
+		}
+	],
+	"license": "MIT",
+	"description": "A pretty print and easy to locate debug function",
+	"keywords": [
+		"debug",
+		"pretty print",
+		"full backtrace",
+		"profiler",
+		"var_dump",
+		"print_r",
+		"dd"
+	],
+	"autoload":	{
+		"files": [
+			"src/debug2.php"
+		]
+	}
+}
