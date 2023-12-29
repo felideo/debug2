@@ -85,8 +85,6 @@ Array
 
 ```
 
-# P.S.
-* Sorry about bad english
 
 
 
