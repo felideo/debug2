@@ -11,6 +11,11 @@
 	"keywords": [
 		"debug",
 		"pretty print",
+		"reflection",
+		"get_class",
+		"get_parent_class",
+		"get_class_methods",
+		"get_class_vars",
 		"full backtrace",
 		"profiler",
 		"var_dump",
