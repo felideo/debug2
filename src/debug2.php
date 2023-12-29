@@ -8,7 +8,7 @@
  * @version  2.0.0
  */
 
-function debug($debug, $title = false, $exit = false){
+function debug1($debug, $title = false, $exit = false){
 	debug2_header('DEBUG', $title);
 	debug2_body($debug);
 	debug2_footer($exit, 3);
