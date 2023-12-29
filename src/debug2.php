@@ -89,7 +89,7 @@ function reflect($object, $method = false, $exit = false){
 
 	debug2_header('REFLECT', $class->getName());
 	debug2_body($debug);
-	debug2_footer($exit, 0);
+	debug2_footer($exit, 3);
 }
 
 function get_class_parents($constructor, $anterior = []){
