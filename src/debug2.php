@@ -5,7 +5,7 @@
  *
  * @author   Felideo Desitale Paravimnce <felideo@gmail.com>
  * @license  MIT
- * @version  2.0.0
+ * @version  2.0.3
  */
 
 function debug1($debug, $title = false, $exit = false){
@@ -86,6 +86,10 @@ function reflect($object, $method = false, $exit = false){
 	$debug['properties'] = empty($debug['properties']) ? '' : $debug['properties'];
 	$debug['methods']    = empty($debug['methods'])    ? '' : $debug['methods'];
 	$debug['method']     = empty($debug['method'])     ? '' : $debug['method'];
+
+	sort($debug['traits']);
+	sort($debug['properties']);
+	sort($debug['methods']);
 
 	debug2_header('REFLECT', $class->getName());
 	debug2_body($debug);
