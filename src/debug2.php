@@ -5,8 +5,14 @@
  *
  * @author   Felideo Desitale Paravimnce <felideo@gmail.com>
  * @license  MIT
- * @version  2.0.3
+ * @version  2.0.4
  */
+
+function debug0($debug, $title = false, $exit = false){
+	debug2_header('DEBUG', $title);
+	debug2_body($debug);
+	debug2_footer($exit, false);
+}
 
 function debug1($debug, $title = false, $exit = false){
 	debug2_header('DEBUG', $title);
@@ -131,8 +137,11 @@ function debug2_body($debug){
 }
 
 function debug2_footer($exit = false, $limit = 0){
-	echo "\n";
-	\debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $limit);
+
+	if($limit !== false){
+		echo "\n";
+		\debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $limit);
+	}
 	echo "\n</pre>";
 
 	if($exit){
