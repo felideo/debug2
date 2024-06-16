@@ -30,19 +30,35 @@ function reflect($object, $method = false, $exit = false){
 	$class = new \ReflectionClass($object);
 
 	$debug = [
-		'class      '         => $class->getShortName(),
-		'namespace  '         => $class->getNamespaceName(),
-		'full_name  '         => $class->getName(),
-		'file       '         => str_replace('/home/vagrant/code/', '', $class->getFileName()),
-		'constructor'         => '',
-		'size       '         => $class->getStartLine() . ' => ' .  $class->getEndLine(),
-		// 'doc_comment'         => $class->getDocComment(),
-		'method'              => [],
-		'parents'             => [],
-		'traits'              => $class->getTraitNames(),
-		'properties'          => [],
-		'methods'             => [],
+		'class       '   => $class->getShortName(),
+		'namespace   '   => $class->getNamespaceName(),
+		'full_name   '   => $class->getName(),
+		'file        '   => str_replace('/home/vagrant/code/', '', $class->getFileName()),
+		'constructor '   => '',
+		'type        '   => '',
+		'instantiable'   => $class->isInstantiable(),
+		'user_defined'   => $class->isUserDefined(),
+		'size        '   => $class->getStartLine() . ' => ' .  $class->getEndLine(),
+		// 'doc_comment' => $class->getDocComment(),
+		'method'         => [],
+		'parents'        => [],
+		'traits'         => $class->getTraitNames(),
+		'properties'     => [],
+		'methods'        => [],
 	];
+
+	if($class->isAbstract()){
+		$debug['type        '] = 'Abstract';
+	}
+	if($class->isInterface()){
+		$debug['type        '] = 'Interface';
+	}
+	if($class->isInternal()){
+		$debug['type        '] = 'Internal';
+	}
+	if($class->isTrait()){
+		$debug['type        '] = 'Trait';
+	}
 
 	if(!empty($method)){
 		$debug['method'] = [
@@ -58,13 +74,13 @@ function reflect($object, $method = false, $exit = false){
 	}
 
 	if(isset($class->getConstructor()->name)){
-		$debug['constructor'] = $class->getConstructor()->name;
+		$debug['constructor '] = $class->getConstructor()->name;
 	}
 
 	if(isset($class->getConstructor()->class)){
 		$constructor = new \ReflectionClass($class->getConstructor()->class);
 
-		$debug['constructor']     .= ' => ' . $class->getConstructor()->class
+		$debug['constructor ']     .= ' => ' . $class->getConstructor()->class
 			. ' => ' . str_replace('/home/vagrant/code/', '', $constructor->getFileName());
 	}
 
