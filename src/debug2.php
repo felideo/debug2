@@ -5,7 +5,7 @@
  *
  * @author   Felideo Desitale Paravimnce <felideo@gmail.com>
  * @license  MIT
- * @version  2.0.4
+ * @version  2.0.5
  */
 
 function debug0($debug, $title = false, $exit = false){
@@ -30,35 +30,19 @@ function reflect($object, $method = false, $exit = false){
 	$class = new \ReflectionClass($object);
 
 	$debug = [
-		'class       '   => $class->getShortName(),
-		'namespace   '   => $class->getNamespaceName(),
-		'full_name   '   => $class->getName(),
-		'file        '   => str_replace('/home/vagrant/code/', '', $class->getFileName()),
-		'constructor '   => '',
-		'type        '   => '',
-		'instantiable'   => $class->isInstantiable(),
-		'user_defined'   => $class->isUserDefined(),
-		'size        '   => $class->getStartLine() . ' => ' .  $class->getEndLine(),
-		// 'doc_comment' => $class->getDocComment(),
-		'method'         => [],
-		'parents'        => [],
-		'traits'         => $class->getTraitNames(),
-		'properties'     => [],
-		'methods'        => [],
+		'class      '         => $class->getShortName(),
+		'namespace  '         => $class->getNamespaceName(),
+		'full_name  '         => $class->getName(),
+		'file       '         => str_replace('/home/vagrant/code/', '', $class->getFileName()),
+		'constructor'         => '',
+		'size       '         => $class->getStartLine() . ' => ' .  $class->getEndLine(),
+		// 'doc_comment'         => $class->getDocComment(),
+		'method'              => [],
+		'parents'             => [],
+		'traits'              => $class->getTraitNames(),
+		'properties'          => [],
+		'methods'             => [],
 	];
-
-	if($class->isAbstract()){
-		$debug['type        '] = 'Abstract';
-	}
-	if($class->isInterface()){
-		$debug['type        '] = 'Interface';
-	}
-	if($class->isInternal()){
-		$debug['type        '] = 'Internal';
-	}
-	if($class->isTrait()){
-		$debug['type        '] = 'Trait';
-	}
 
 	if(!empty($method)){
 		$debug['method'] = [
@@ -74,13 +58,13 @@ function reflect($object, $method = false, $exit = false){
 	}
 
 	if(isset($class->getConstructor()->name)){
-		$debug['constructor '] = $class->getConstructor()->name;
+		$debug['constructor'] = $class->getConstructor()->name;
 	}
 
 	if(isset($class->getConstructor()->class)){
 		$constructor = new \ReflectionClass($class->getConstructor()->class);
 
-		$debug['constructor ']     .= ' => ' . $class->getConstructor()->class
+		$debug['constructor']     .= ' => ' . $class->getConstructor()->class
 			. ' => ' . str_replace('/home/vagrant/code/', '', $constructor->getFileName());
 	}
 
@@ -94,15 +78,16 @@ function reflect($object, $method = false, $exit = false){
 		}
 	}
 
-	foreach ($class->getMethods() as $index => $method) {
-		if(isset($method->name)){
-			$debug['methods'][$index] = $method->name;
-		}
+	$debug = get_methods($class, $debug);
 
-		if(isset($property->class)){
-			$debug['methods'][$index] .= ' => ' . $method->class;
+	if(!empty($debug['traits'])){
+		foreach ($debug['traits'] as $index => $trait) {
+			$traitClass = new \ReflectionClass($trait);
+			$debug      = get_methods($traitClass, $debug);
 		}
 	}
+
+	$debug['method'] = array_keys($debug['method']);
 
 	$debug['parents']    = empty($debug['parents'])    ? '' : $debug['parents'];
 	$debug['properties'] = empty($debug['properties']) ? '' : $debug['properties'];
@@ -116,6 +101,20 @@ function reflect($object, $method = false, $exit = false){
 	debug2_header('REFLECT', $class->getName());
 	debug2_body($debug);
 	debug2_footer($exit, 3);
+}
+
+function get_methods($class, $debug){
+	foreach ($class->getMethods() as $index => $method) {
+		if(isset($method->name)){
+			$debug['methods'][md5($method->name)] = $method->name;
+		}
+
+		if(isset($method->class)){
+			$debug['methods'][md5($method->name)] .= ' => ' . $method->class;
+		}
+	}
+
+	return $debug;
 }
 
 function get_class_parents($constructor, $anterior = []){
